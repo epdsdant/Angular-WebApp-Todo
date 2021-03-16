@@ -1,12 +1,37 @@
-<!--The content below is only a placeholder and can be replaced.-->
+<!--The content below is only a placeholder and can be replaced.
+Tipos de BINDS
+() = HTML -> TS
+[] = TS -> HTML
+[()] = TS <-> HTML
+
+-->
 <div>
   <h1>
     {{title}}
   </h1>
   <ul>
     <li *ngFor="let todo of todos">
-      {{todo.todo}}
-      <button>REMOVER</button> | <button>CONCLUIR</button>
+      {{todo.id}} - {{todo.description}}
+      <button *ngIf="!todo.done" (click)="concluirTodo(todo)">CONCLUIR</button>
+      <button *ngIf="todo.done" (click)="refazerTodo(todo)">REFAZER</button> |
+      <button (click)="removerTodo(todo)">REMOVER</button>
     </li>
   </ul>
+
+  <form [formGroup]="form">
+    <fieldset>
+      <label for="">Adicionar Tarefa:</label>
+      <input
+        type="text"
+        placeholder="Informe sua tarefa"
+        maxlength="60"
+        formControlName="description"
+      />
+      <small
+        *ngIf="form.controls.description.invalid && !form.controls.description.pristine"
+        >Este campo deve conter entre 3 e 60 caracteres</small
+      >
+      <button [disabled]="form.invalid">Salvar</button>
+    </fieldset>
+  </form>
 </div>
