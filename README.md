@@ -1,2 +1,3 @@
-# FirstWebAppTodoApp
-Created with CodeSandbox
+# Angular - FirstWebAppTodoApp
+Primeira aplicação Angular | Typescript
+Gravação de dados em LocalStorage
