@@ -10,11 +10,12 @@ Tipos de BINDS
     {{title}}
   </h1>
   <ul>
+    <p *ngIf="todos.length===0"><small>Nenhuma registro encontrado</small></p>
     <li *ngFor="let todo of todos">
       {{todo.id}} - {{todo.description}}
-      <button *ngIf="!todo.done" (click)="concluirTodo(todo)">CONCLUIR</button>
-      <button *ngIf="todo.done" (click)="refazerTodo(todo)">REFAZER</button> |
-      <button (click)="removerTodo(todo)">REMOVER</button>
+      <button *ngIf="!todo.done" (click)="doneTodo(todo)">CONCLUIR</button>
+      <button *ngIf="todo.done" (click)="undoTodo(todo)">REFAZER</button> |
+      <button (click)="removeTodo(todo)">REMOVER</button>
     </li>
   </ul>
 
@@ -28,10 +29,11 @@ Tipos de BINDS
         formControlName="description"
       />
       <small
-        *ngIf="form.controls.description.invalid && !form.controls.description.pristine"
+        *ngIf="form.controls.description.invalid && 
+        !form.controls.description.pristine"
         >Este campo deve conter entre 3 e 60 caracteres</small
       >
-      <button [disabled]="form.invalid">Salvar</button>
+      <button [disabled]="form.invalid" (click)="addTodo()">Salvar</button>
     </fieldset>
   </form>
 </div>

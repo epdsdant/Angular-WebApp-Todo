@@ -26,23 +26,46 @@ export class AppComponent {
       ]
     });
 
-    this.todos.push(new Todo(1, "Estudar Angular", true));
-    this.todos.push(new Todo(2, "Estudar ReactJS", false));
-    this.todos.push(new Todo(3, "Estudar Salesforce", false));
+    this.loadLocalStorage();
   }
 
-  removerTodo(todo: Todo) {
+  addTodo() {
+    const description = this.form.controls["description"].value;
+    const id = this.todos.length + 1;
+    this.todos.push(new Todo(id, description, false));
+    this.saveLocalStorage();
+    this.clearForm();
+  }
+
+  removeTodo(todo: Todo) {
     const index = this.todos.indexOf(todo);
     if (index !== -1) {
       this.todos.splice(index, 1);
+      this.saveLocalStorage();
     }
   }
 
-  refazerTodo(todo: Todo) {
+  undoTodo(todo: Todo) {
     todo.done = false;
+    this.saveLocalStorage();
   }
 
-  concluirTodo(todo: Todo) {
+  doneTodo(todo: Todo) {
     todo.done = true;
+    this.saveLocalStorage();
+  }
+
+  clearForm() {
+    this.form.reset();
+  }
+
+  //Tratando persistência em localStorage
+  saveLocalStorage() {
+    const data = JSON.stringify(this.todos);
+    localStorage.setItem("todos", data);
+  }
+
+  loadLocalStorage() {
+    this.todos = JSON.parse(localStorage.getItem("todos"));
   }
 }
