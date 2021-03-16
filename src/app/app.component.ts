@@ -8,8 +8,10 @@ import { Todo } from "src/models/todo.model";
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
-  public title: String = "Minhas Tarefas";
+  public title: String = "My Todo List";
   public todos: Todo[] = [];
+
+  public mode: String = "list";
 
   //Criação de Formulário
   public form: FormGroup;
@@ -63,9 +65,19 @@ export class AppComponent {
   saveLocalStorage() {
     const data = JSON.stringify(this.todos);
     localStorage.setItem("todos", data);
+    this.mode = "list";
   }
 
   loadLocalStorage() {
-    this.todos = JSON.parse(localStorage.getItem("todos"));
+    const data = localStorage.getItem("todos");
+    if (data) {
+      this.todos = JSON.parse(data);
+    } else {
+      this.todos = [];
+    }
+  }
+
+  changeMode(mode: String) {
+    this.mode = mode;
   }
 }

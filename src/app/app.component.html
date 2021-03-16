@@ -6,34 +6,72 @@ Tipos de BINDS
 
 -->
 <div>
-  <h1>
+  <h1 class="title animate__bounce">
     {{title}}
   </h1>
-  <ul>
-    <p *ngIf="todos.length===0"><small>Nenhuma registro encontrado</small></p>
+  <ul aminated flixInX *ngIf="mode==='list'">
+    <p class="text-center" *ngIf="todos.length===0">
+      <small>No records found</small>
+    </p>
     <li *ngFor="let todo of todos">
-      {{todo.id}} - {{todo.description}}
-      <button *ngIf="!todo.done" (click)="doneTodo(todo)">CONCLUIR</button>
-      <button *ngIf="todo.done" (click)="undoTodo(todo)">REFAZER</button> |
-      <button (click)="removeTodo(todo)">REMOVER</button>
+      {{todo.description}}
+      <button (click)="removeTodo(todo)">
+        <i class="far fa-trash-alt"></i>
+      </button>
+      <button *ngIf="!todo.done" (click)="doneTodo(todo)">
+        <i class="far fa-check-circle"></i>
+      </button>
+      <button *ngIf="todo.done" (click)="undoTodo(todo)">
+        <i class="fas fa-check-circle"></i>
+      </button>
     </li>
   </ul>
 
-  <form [formGroup]="form">
-    <fieldset>
-      <label for="">Adicionar Tarefa:</label>
-      <input
-        type="text"
-        placeholder="Informe sua tarefa"
-        maxlength="60"
-        formControlName="description"
-      />
-      <small
-        *ngIf="form.controls.description.invalid && 
+  <div id="modal" *ngIf="mode==='add'">
+    <h1 class="text-center">New Task</h1>
+    <form [formGroup]="form">
+      <fieldset>
+        <input
+          type="text"
+          placeholder="Entry a new task"
+          maxlength="60"
+          formControlName="description"
+        />
+        <br />
+        <br />
+        <small
+          class="danger text-center"
+          *ngIf="form.controls.description.invalid && 
         !form.controls.description.pristine"
-        >Este campo deve conter entre 3 e 60 caracteres</small
-      >
-      <button [disabled]="form.invalid" (click)="addTodo()">Salvar</button>
-    </fieldset>
-  </form>
+        >
+          This field must contain between 3 and 60 characters
+          <br />
+        </small>
+        <p class="text-center">
+          <button class="button" [disabled]="form.invalid" (click)="addTodo()">
+            <i class="fas fa-save"></i>
+            Save
+          </button>
+        </p>
+      </fieldset>
+    </form>
+  </div>
+  <br />
+  <button
+    class="add-button button"
+    (click)="changeMode('add')"
+    *ngIf="mode==='list'"
+  >
+    <i class="fas fa-plus-circle"></i>
+    Add new Task
+  </button>
+  <br />
+  <button
+    class="add-button button"
+    (click)="changeMode('list')"
+    *ngIf="mode==='add'"
+  >
+    <i class="fas fa-times"></i>
+    Cancel
+  </button>
 </div>
